@@ -355,7 +355,8 @@ select copyright from books;
 select author, title from books;
 select author from books where author like '%millet%';
 select title from books where author like '%mbue%';
-select author, title from books where title not like '%e';```
+select author, title from books where title not like '%e';
+```
 
 ### Install PHP/MySQL Support
 
