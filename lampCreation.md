@@ -1,6 +1,6 @@
 # Week 7: Setting Up a LAMP Server
 
-##Steps
+## Steps
 
 1. Install Apache (or Apache2, in this case)
 2. Install PHP
@@ -18,6 +18,7 @@ most popular web server on the Internet (maybe)! Find it [here](http://httpd.apa
 Be sure your system is up to date with
 
 `sudo apt update
+
 sudo apt upgrade`
 
 Restart if needed with 
@@ -39,6 +40,7 @@ To install, run
 Dr. Burns recommends some checks after installation:
 
 `systemctl list-unit-files apache2.service
+
 systemctl status apache2`
 
 If you see a green "Enabled," you're golden! Or green.
@@ -52,6 +54,7 @@ A Dr. Burns recommendation: use the w3m browser to check on Apache's functionali
 To use w3m, run either of the following:
 
 `w3m 127.0.0.1
+
 w3m localhost`
 
 You'll see a default Apache webpage (or whatever you've decided to put there instead, if you've
@@ -74,6 +77,7 @@ and you can see it!
 The default page for Apache2 is stored in the html directory upon install. Go to it with 
 
 `cd /var/www/html/
+
 ls`
 
 You'll see index.html, which has the dummy text you saw with w3m, if you didn't skip that step.
@@ -94,15 +98,25 @@ new one.
 
 Put a little html in there to make it look pretty. I used the following:
 
-`<html>
+```
+<html>
+
 <head>
+
 <title>My Apache2 Webpage!</title>
+
 </head>
+
 <body>
+
 <h1>Welcome to my homepage!</h1>
+
 <p>This is my Apache2 webpage, made using an Ubuntu virtual machine!</p>
+
 </body>
-</html>`
+
+</html>
+```
 
 Write it out. Now, when you visit your site (or when you visit the domain/index.html), you'll see
 this shiny new stuff. index.html.original is also there--just tack its filename onto the end of the domain
@@ -132,7 +146,9 @@ And make a dummy file.
 Drop in the following code:
 
 `<?php
+
 phpinfo();
+
 ?>`
 
 View this file at your external IP/info.php, like with the above Apache tests. You should see a big old
@@ -145,6 +161,7 @@ we need to change where Apache2 tends to go. That's relatively easy to do. The f
 lives in the /etc/ directory. Go there:
 
 `cd /etc/apache2/mods-enabled/
+
 ls`
 
 See the `dir.conf` file? It's what needs to be changed. First, make a copy:
@@ -167,12 +184,12 @@ If it says Syntax Ok, you're good to go.
 
 This process  changes which item Apache2 pulls first as the landing page for your
 external IP. Originally, it was set to default to index.html before index.php, which
-means what index.php won't ever show up as the landing page, since we already have an index.html.
- 
+means what index.php won't ever show up as the landing page, since we already have an index.html. 
 
 Restart the system:
 
 `sudo systemctl reload apache2
+
 sudo systemctl restart apache2`
 
 #### Making an Index.php
@@ -182,25 +199,38 @@ By the way, if we want index.php to show up, we need to make one of those...
 Go back to your html directory and make a file for it:
 
 `cd /var/www/html/
+
 sudo nano index.php`
 
 Dr. Burns had us use a browser detector for the index:
 
-`<html>
+```
+<html>
+
 <head>
+
 <title>Browser Detector</title>
+
 </head>
+
 <body>
+
 <p>You are using the following browser to view this site:</p>
 
 <?php
+
 echo $_SERVER['HTTP_USER_AGENT']. "\n\n";
 
 $browser = get_browser(null, true);
+
 print_r($browser);
+
 ?>
+
 </body>
-</html>`
+
+</html>
+```
 
 This should now show up at your external IP's index page! Check with w3m or a graphical browser.
 
@@ -251,13 +281,16 @@ password. Just hit return and it'll accept it.
 Make a new database and test out how it all goes together! From here on, we're using class information, not general stuff, but the process remains the same.
 
 `create database opacdb;
+
 grant all privileges on opacdb.* to 'name'@'localhost';
+
 show databases;`
 
 Now you should have a database called opacdb, as well as a user who can fully edit the database. It's time
 to stop being root!
 
 `/q
+
 exit`
 
 You should be your own user again. Log back into MySQL in your shiny new user account:
@@ -268,21 +301,29 @@ You'll be prompted to enter your password. Again, this enters without visual inp
 the databases and open up the one you want to use:
 
 `shop databases;
+
 use opacdb;`
 
 Now we're going to make a table called books, and make some fields to go in it.
 
 `create table books (
+
 id int unsigned not null auto_increment,
+
 author varchar(150) not null,
+
 title varchar(150) not null;
+
 copyright date not null,
+
 primary key (id)
+
 );`
 
 Check what it looks like with:
 
 `show tables;
+
 describe books;`
 
 #### Add Records to the Database
@@ -290,9 +331,13 @@ describe books;`
 Time to drop some book records into our database. Here's the sample data from Dr. Burns:
 
 `insert into books (author, title, copyright) values
+
 ('Jennifer Egan', 'The Candy House', '2022-04-05'),
+
 ('Imbolo Mbue', 'How Beautiful We Were', '2021-03-09'),
+
 ('Lydia Millet', 'A Children\'s Bible', '2020-05-12'),
+
 ('Julia Phillips', 'Disappearing Earth', '2019-05-14');`
 
 To see all of the stuff that just went into the database, run:
@@ -306,8 +351,11 @@ If you want to add a new column to the table, it will look something like this:
 You can add to existing records with commands like this:
 
 `update books set publisher='Simon \& Schuster' where id='1';
+
 update books set publisher='Penguin Random House' where id='2';
+
 update books set publisher='W. W. Norton \& Company' where id='3';
+
 update books set publisher='Knopf' where id='4';`
 
 The above adds data based on the fixed IDs generated by the database. These IDs are unique to each record and are produced as the 
@@ -316,10 +364,15 @@ database grows; when a record is deleted, its unique ID goes with it. That makes
 Here are some other commands that can return specific data from the table without the user needing to read the whole thing:
 
 `select author from books;
+
 select copyright from books;
+
 select author, title from books;
+
 select author from books where author like '%millet%';
+
 select title from books where author like '%mbue%';
+
 select author, title from books where title not like '%e';`
 
 ### Install PHP/MySQL Support
@@ -332,16 +385,22 @@ that make MySQL and PHP play nice together. Get these modules with sudo:
 Restart Apache2 and MySQL, as usual.
 
 `sudo systemctl restart apache2
+
 sudo systemctl restart mysql`
 
 "In order for PHP to connect to MySQL, it needs to authenticate itself," says Dr. Burns. I have no clue what that really
 means, but here's how to do it:
 
 `cd /var/www/html/
+
 sudo touch login.php
+
 sudo chmod 640 login.php
+
 sudo chown :www-data login.php
+
 ls -l login.php
+
 sudo nano login.php`
 
 Basically, you've just created a file that has specific permissions that mean it's readable to Apache2, but not to any old
@@ -349,10 +408,15 @@ slob who accesses our files via the web. Now, we need to set credentials in that
 enter the following:
 
 `<?php // login.php
+
 $db_hostname = "localhost";
+
 $db_database = "opacdb";
+
 $db_username = "name";
+
 $db_password = "XXXXX";
+
 ?>`
 
 Obviously, "name" and "XXXXX" are your MySQL username and password from when we set up the user's MySQL login info. The database 
@@ -364,10 +428,15 @@ Next, we make a file that will be a place for the OPAC to render on the web:
 
 Put this in it:
 
-`<html>
+```
+<html>
+
 <head>
+
 <title>MySQL Server Example</title>
+
 </head>
+
 <body>
 
 <h1>A Basic OPAC</h1>
@@ -378,25 +447,35 @@ using a couple of different queries.</p>
 <?php
 
 // Load MySQL credentials
+
 require_once 'login.php';
 
 // Establish connection
+
 $conn = mysqli_connect($db_hostname, $db_username, $db_password) or
+
   die("Unable to connect");
 
 // Open database
+
 mysqli_select_db($conn, $db_database) or
+
   die("Could not open database '$db_database'");
 
 echo "<h2>Query 1: Retrieving Publisher and Author Data</h2>";
 
 // Query 1
+
 $query1 = "select * from books";
+
 $result1 = mysqli_query($conn, $query1);
 
 while($row = $result1->fetch_assoc()) {
+
     echo "<p>Publisher " . $row["publisher"] .
+
         " published a book by " . $row["author"] .
+
         ".</p>";
 }
 
@@ -405,29 +484,39 @@ mysqli_free_result($result1);
 echo "<h2>Query 2: Retrieving Author, Title, Date Published Data</h2>";
 
 $result2 = mysqli_query($conn, $query1);
+
 while($row = $result2->fetch_assoc()) {
+
     echo "<p>A book by " . $row["author"] .
+
         " titled <em>" . $row["title"] .
+
         "</em> was released on " . $row["copyright"] .
+
         ".</p>";
 }
 
 // Free result2 set
+
 mysqli_free_result($result2);
 
 /* Close connection */
+
 mysqli_close($conn);
 
 ?>
 
 </body>
-</html>`
+
+</html>
+```
 
 This gives you some hard-coded returns from the database. We'll need to set up ways for the user to query the database later.
 
 All that's left is to test the syntax for everything:
 
 `sudo php -f login.php
+
 sudo php -f index.php`
 
 If those both return with Syntax Ok, you're set with a LAMP stack!
