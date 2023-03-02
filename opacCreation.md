@@ -1,22 +1,25 @@
-#Making a Basic OPAC
+# Week 8: Making a Basic OPAC
 
-##Steps
+## Steps
 1. Make a PHP script for searching
 2. Make an HTML page that allows the user to interact with the PHP script
 3. Put more stuff in the OPAC for the user to look for
 
-###Making a PHP Script
+### Making a PHP Script
 
 *This part is easy. Dr. Burns asked ChatGPT for a bit of script to fit this purpose (IMO probably the best and only use for ChatGPT--I won't get into that here though).*
 
 First, we need to make a file:
 
-`cd /var/www/html/
-sudo nano search.php`
+```
+cd /var/www/html/
+sudo nano search.php
+```
 
 Paste in this code:
 
-`<?php
+```
+<?php
 // Load MySQL credentials
 require_once 'login.php';
 
@@ -71,7 +74,8 @@ mysqli_close($conn);
 
 echo "<p>Return to search page: <a href='http://11.111.222.222/opacbb.html'>http://11.111.222.222/opacbb.html</a></p>";
 
-?>`
+?>
+```
 
 Obviously, you need to swap your external IP in place of the `11.111.222.222` stuff in there, but otherwise this should give you a pretty bland, if servicable, search. 
 
@@ -88,7 +92,8 @@ For now, make a new HTML file:
 
 Paste in some code to allow for search boxes and communication with the PHP script:
 
-`<html>
+```
+<html>
 <head>
 <title>MySQL Server Example</title>
 </head>
@@ -139,7 +144,8 @@ an intuition, of how an OPAC works, though.</p>
 
 
 </body>
-</html>`
+</html>
+````
 
 By the way, this HTML also links to the OPAC PHP listing that we made earlier, which just shows the whole catalogue.
 
@@ -163,10 +169,12 @@ If you want to see the contents that you already have:
 
 Now, insert some new contents into the table:
 
-`insert into books
+```
+insert into books
 (author, title, publisher, copyright) values
 ('Emma Donoghue', 'Room', 'Little, Brown \& Company', '2010-08-06'),
-('Zadie Smith', 'White Teeth', 'Hamish Hamilton', '2000-01-27');`
+('Zadie Smith', 'White Teeth', 'Hamish Hamilton', '2000-01-27');
+```
 
 If you want to delete a record:
 
