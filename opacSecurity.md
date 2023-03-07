@@ -1,10 +1,10 @@
 # Making our Basic OPAC Secure and Web-Usable
 
 ## Steps
--Create a web-usable data entry page
--Create a PHP script to catch entries from the data entry page and convey 
+1. Create a web-usable data entry page
+2. Create a PHP script to catch entries from the data entry page and convey 
 them to MySQL
--Secure the page with a username and password
+3. Secure the page with a username and password
 
 ### Create a web-usable data entry page
 
