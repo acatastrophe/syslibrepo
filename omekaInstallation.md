@@ -94,7 +94,7 @@ sudo systemctl restart mysql
 
 ### Complete the Install Through the Browser
 
-Again, navigate to http://11.111.111.11/omeka either in w3m or with a graphical browser. A graphical browser would be preferred, especially if you're planning to do additional work in 
+Again, navigate to `http://11.111.111.11/omeka` either in w3m or with a graphical browser. A graphical browser would be preferred, especially if you're planning to do additional work in 
 Omeka after setup. There will be a web form to fill out here.
 
 Omeka, once set up, manages content by using Dublin Core metadata and a tagging system. Find more information on Dublin Core [here](https://www.dublincore.org/).
