@@ -129,6 +129,7 @@ Now, create a Koha database:
 
 ```
 koha-create --create-db bibliolib
+```
 
 And tell Apache2 to listen on port 8080 (the port we specified for allowable web traffic 
 earlier on):
